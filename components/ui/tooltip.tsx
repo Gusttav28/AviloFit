@@ -1,0 +1,1 @@
+"use client";import * as T from "@radix-ui/react-tooltip";export function Tooltip({label,children}:{label:string;children:React.ReactNode}){return <T.Provider><T.Root><T.Trigger asChild>{children}</T.Trigger><T.Portal><T.Content className="tooltip" sideOffset={6}>{label}<T.Arrow/></T.Content></T.Portal></T.Root></T.Provider>}

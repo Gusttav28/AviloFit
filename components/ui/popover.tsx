@@ -1,0 +1,1 @@
+"use client";import * as P from "@radix-ui/react-popover";export const Popover=P.Root;export const PopoverTrigger=P.Trigger;export function PopoverContent({children}:{children:React.ReactNode}){return <P.Portal><P.Content className="popover" sideOffset={8}>{children}<P.Arrow className="popover-arrow"/></P.Content></P.Portal>}

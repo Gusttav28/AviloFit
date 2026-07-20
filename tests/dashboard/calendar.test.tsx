@@ -1,0 +1,9 @@
+import { fireEvent,render,screen,waitFor } from "@testing-library/react";
+import { describe,expect,it,vi } from "vitest";
+import { DayStrip } from "@/components/dashboard/day-strip";
+import { fixtureDashboardProvider } from "@/features/dashboard/fixture-dashboard-provider";
+
+describe("calendar",()=>{
+  it("selects bounded days, identifies today, and restores focus from the dialog",async()=>{const model=await fixtureDashboardProvider.getDashboard(),onSelect=vi.fn();render(<DayStrip days={model.days} selected={model.selectedDate} onSelect={onSelect} locale={model.locale} timeZone={model.timeZone}/>);fireEvent.click(screen.getByRole("button",{name:/Tuesday, July 14/}));expect(onSelect).toHaveBeenCalledWith("2026-07-14");const trigger=screen.getByRole("button",{name:"Open calendar"});fireEvent.click(trigger);expect(screen.getByRole("dialog")).toBeInTheDocument();expect(screen.getByRole("button",{name:/Jul 13.*Today.*Selected/})).toBeInTheDocument();expect(screen.getByRole("button",{name:"Previous available month"})).toBeDisabled();expect(screen.getByRole("button",{name:"Next available month"})).toBeDisabled();fireEvent.keyDown(screen.getByRole("dialog"),{key:"Escape"});await waitFor(()=>expect(trigger).toHaveFocus())});
+  it("closes after choosing a dialog date",async()=>{const model=await fixtureDashboardProvider.getDashboard(),onSelect=vi.fn();render(<DayStrip days={model.days} selected={model.selectedDate} onSelect={onSelect} locale={model.locale} timeZone={model.timeZone}/>);fireEvent.click(screen.getByRole("button",{name:"Open calendar"}));const dialog=screen.getByRole("dialog");fireEvent.click(dialog.querySelector('button[aria-pressed="false"]')!);await waitFor(()=>expect(screen.queryByRole("dialog")).not.toBeInTheDocument());expect(onSelect).toHaveBeenCalled()});
+});
