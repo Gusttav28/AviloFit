@@ -1,0 +1,8 @@
+import type {DashboardViewModel,Day,GroceryItem,NutritionMetric,ReferenceActivityCard,ReferenceMacroBar} from "./model";
+export const selectDay=(model:DashboardViewModel,date:string):Day=>model.days.find(d=>d.date===date)??{date,kind:"unavailable",planState:"Unavailable",meals:[]};
+export const canSelectDate=(model:DashboardViewModel,date:string)=>date>=model.availableDateRange[0]&&date<=model.availableDateRange[1];
+export const progressFor=(metric:NutritionMetric)=>metric.value==null||(!metric.range&&(metric.target==null||metric.target<=0))?null:Math.min(100,Math.round(metric.value/(metric.target??metric.range![1])*100));
+export const rangeLabel=(metric:NutritionMetric)=>metric.value==null?"Unavailable":!metric.range&&(metric.target==null||metric.target<=0)?"No target set":metric.range?(metric.value<metric.range[0]?"below range":metric.value>metric.range[1]?"above range":"within range"):metric.value<metric.target! ? "below target":metric.value>metric.target! ? "above target":"at target";
+export const groceryList=(day:Day):GroceryItem[]=>{const map=new Map<string,GroceryItem>();for(const meal of day.meals)for(const item of meal.ingredients)if(!item.inPantry){const current=map.get(item.name)??{name:item.name,quantity:item.quantity,unit:item.unit,meals:[],estimatedCost:item.estimatedCost};if(!current.meals.includes(meal.name))current.meals.push(meal.name);map.set(item.name,current)}return [...map.values()]};
+export const weeklyMacroBars=(model:DashboardViewModel):ReferenceMacroBar[]=>model.reference.summary.bars;
+export const referenceActivityCards=(model:DashboardViewModel,size?:ReferenceActivityCard["size"]):ReferenceActivityCard[]=>model.reference.activityCards.filter(card=>!size||card.size===size);
