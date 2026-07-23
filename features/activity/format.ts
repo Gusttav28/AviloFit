@@ -1,0 +1,3 @@
+export const clampProgress=(value:number)=>Math.max(0,Math.min(100,value));
+export const formatPace=(secondsPerKm:number)=>{const minutes=Math.floor(secondsPerKm/60);const seconds=String(Math.round(secondsPerKm%60)).padStart(2,"0");return `${minutes}'${seconds}" /km`};
+export const formatReferenceDate=(date:string,referenceDate:string,timeZone:string)=>{const targetDay=Date.parse(`${date.slice(0,10)}T00:00:00Z`);const referenceDay=Date.parse(`${referenceDate.slice(0,10)}T00:00:00Z`);if(targetDay===referenceDay)return "Today";if(referenceDay-targetDay===86400000)return "Yesterday";return new Intl.DateTimeFormat("en-US",{month:"short",day:"numeric",timeZone}).format(new Date(date))};

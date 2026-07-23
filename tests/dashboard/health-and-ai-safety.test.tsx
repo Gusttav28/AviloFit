@@ -16,7 +16,7 @@ describe("health and AI safety",()=>{
     expect(screen.getByRole("button",{name:"Ask"})).toBeDisabled();
     fireEvent.click(screen.getByText("What can I cook now?"));
     fireEvent.click(screen.getByRole("button",{name:"Ask"}));
-    expect(await screen.findByText(/Herby chickpea bowl fits \$18\.00 daily budget/)).toBeInTheDocument();
+    expect(await screen.findByText(/Citrus oats fits \$18\.00 daily budget/)).toBeInTheDocument();
   });
 
   it("renders synthetic reference activity cards without external provenance",()=>{
@@ -43,9 +43,9 @@ describe("health and AI safety",()=>{
   });
 
   it("renders local synthetic history without health, AI, billing, or purchase provenance",()=>{
-    const {container}=render(<MealWorkoutHistory history={fixtureReferenceDashboard.history} locale="en-US" currency="USD" timeZone="America/Costa_Rica"/>);
+    const {container}=render(<MealWorkoutHistory history={fixtureReferenceDashboard.history} selectedDate="2026-07-20" onSelectDate={()=>{}} availableDates={new Set(["2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26"])} locale="en-US" currency="USD" timeZone="America/Costa_Rica"/>);
     expect(screen.getByText(/deterministic demo data/i)).toBeInTheDocument();
-    expect(container).toHaveTextContent("Workout -450 kcal");
+    expect(container).toHaveTextContent("Workout -320 kcal");
     expect(container).toHaveTextContent("Recipe +420 kcal");
     expect(container).not.toHaveTextContent(/Connected health|medical|diagnosis|offset|charge|billing|purchase|AI/i);
   });

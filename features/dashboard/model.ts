@@ -19,9 +19,21 @@ export interface ReferenceProgressCard {label:string;description:string;value:st
 export interface ReferenceHistoryEntry {id:string;date:string;mealName:string;recipe:string;workoutCalories:number;recipeCalories:number;price:number}
 export interface ReferenceHistoryData {selectedDate:string;availableDateRange:[string,string];entries:ReferenceHistoryEntry[]}
 export interface DashboardReferenceData {summary:ReferenceSummary;activityCards:ReferenceActivityCard[];progressCards:ReferenceProgressCard[];history:ReferenceHistoryData}
+export interface DailySummaryPreview {nutrition?:string;activity?:string}
+export interface DailyDashboardSnapshot {preview:DailySummaryPreview;summary:ReferenceSummary;activityCards:ReferenceActivityCard[];progressCards:ReferenceProgressCard[]}
 export interface ContextChip {kind:ContextKind;label:string;detail:string;available:boolean}
 export interface AskAviloRequest {question:string;date:string;recommendation?:string;contexts:ContextChip[]}
-export type DashboardSectionName="calendar"|"recommendations"|"nutrition"|"goal"|"activity"|"history"|"ai";
+export type DashboardSectionName="calendar"|"recommendations"|"nutrition"|"goal"|"activity"|"history"|"ai"|"performance"|"metrics"|"meals"|"workouts"|"insights";
 export type DashboardSectionStatus="loading"|"ready"|"empty"|"error";
-export interface DashboardViewModel {locale:string;currency:string;timeZone:string;selectedDate:string;availableDateRange:[string,string];budget:{amount:number;cadence:"meal"|"day"|"week"};days:Day[];contextsByDate:Record<string,ContextChip[]>;sectionStates:Record<DashboardSectionName,DashboardSectionStatus>;reference:DashboardReferenceData}
+export interface FitCoreProgress {value:number;max:number}
+export interface FitCorePerformance {goalPercent:number;title:string;message:string;points:number;metrics:{kind:string;label:string;value:string}[]}
+export type FitCoreMetricKind="steps"|"water"|"calories"|"sleep";
+export interface FitCoreQuickMetric {kind:FitCoreMetricKind;context:string;value:string;label:string;progress:FitCoreProgress}
+export interface FitCoreMeal {id:string;state:"logged"|"scheduled";occasion:string;name?:string;suggestion?:string;time:string;calories?:number;protein?:number;carbs?:number;fat?:number;imageSrc?:string;imageAlt?:string}
+export interface FitCoreCalendarDay {date:string;inCurrentMonth:boolean;hasEvent:boolean}
+export interface FitCoreCalendarEvent {id:string;date:string;label:string;tone:"primary"|"neutral"}
+export interface FitCoreWorkout {id:string;kind:"run"|"strength";name:string;durationMinutes:number;calories:number;averageHeartRate:number;progress:FitCoreProgress}
+export interface FitCoreInsight {recommendation:string;recoveryPercent:number;disclaimer:string}
+export interface FitCoreDashboardData {productName:string;searchPlaceholder:string;performance:FitCorePerformance;quickMetrics:FitCoreQuickMetric[];meals:FitCoreMeal[];calendarRange:[string,string];calendarDays:FitCoreCalendarDay[];events:FitCoreCalendarEvent[];workouts:FitCoreWorkout[];insight:FitCoreInsight}
+export interface DashboardViewModel {locale:string;currency:string;timeZone:string;selectedDate:string;availableDateRange:[string,string];budget:{amount:number;cadence:"meal"|"day"|"week"};days:Day[];contextsByDate:Record<string,ContextChip[]>;sectionStates:Record<DashboardSectionName,DashboardSectionStatus>;reference:DashboardReferenceData;referenceByDate:Record<string,DailyDashboardSnapshot>;fitCore:FitCoreDashboardData}
 export interface GroceryItem {name:string;quantity?:number;unit?:string;meals:string[];estimatedCost?:number}

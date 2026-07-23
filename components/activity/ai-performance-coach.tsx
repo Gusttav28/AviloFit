@@ -1,0 +1,2 @@
+import {Sparkles} from "lucide-react"; import type {ActivityViewModel} from "@/features/activity/model";
+export function AiPerformanceCoach({data}:{data:ActivityViewModel["coach"]}){return <section className="activity-coach" aria-labelledby="coach-heading"><Sparkles size={28} aria-hidden="true"/><p className="activity-coach-eyebrow">Synthetic demo coach</p><h2 id="coach-heading">{data.title}</h2><p>{data.recommendation}</p><small>{data.disclosure}</small><button type="button">Read Full Report</button></section>}

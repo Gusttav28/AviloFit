@@ -1,5 +1,5 @@
 import type { AskAviloProvider, DashboardProvider } from "./dashboard-provider";
-import type { Activity, ContextChip, DashboardReferenceData, DashboardSectionName, DashboardSectionStatus, DashboardViewModel, Day, Goal, Meal, Nutrition } from "./model";
+import type { Activity, ContextChip, DashboardReferenceData, DashboardSectionName, DashboardSectionStatus, DashboardViewModel, Day, Goal, Meal, Nutrition, DailyDashboardSnapshot, FitCoreDashboardData } from "./model";
 
 const meal = (id:string,name:string,occasion:string,time:string,cost:number,status:Meal["status"]="recommended"):Meal => ({
   id,name,occasion,time,cost,status,calories:occasion==="Dinner"?510:420,protein:32,carbs:48,fat:14,
@@ -37,7 +37,8 @@ const contexts:ContextChip[]=[
   {kind:"pantry",label:"Pantry",detail:"1 ingredient confirmed at home",available:true},
   {kind:"grocery",label:"Nearby groceries",detail:"No live store connection; demo estimates only",available:false}
 ];
-const sectionStates:Record<DashboardSectionName,DashboardSectionStatus>={calendar:"ready",recommendations:"ready",nutrition:"ready",goal:"ready",activity:"ready",history:"ready",ai:"ready"};
+const sectionStates:Record<DashboardSectionName,DashboardSectionStatus>={calendar:"ready",recommendations:"ready",nutrition:"ready",goal:"ready",activity:"ready",history:"ready",ai:"ready",performance:"ready",metrics:"ready",meals:"ready",workouts:"ready",insights:"ready"};
+const fitCore:FitCoreDashboardData={productName:"Avilo Fit",searchPlaceholder:"Search analytics...",performance:{goalPercent:75,title:"Weekly Performance",message:"You're 12% ahead of your weekly training target. Keep it up, Uzui!",points:320,metrics:[{kind:"score",label:"Activity Score",value:"94/100"},{kind:"calories",label:"Calories Burned",value:"12,450"},{kind:"minutes",label:"Active Minutes",value:"480m"}]},quickMetrics:[{kind:"steps",context:"Today",value:"8,432",label:"Steps Taken",progress:{value:84,max:100}},{kind:"water",context:"2.1L / 3L",value:"70%",label:"Water Intake",progress:{value:70,max:100}},{kind:"calories",context:"Remaining",value:"640",label:"kcal Left",progress:{value:60,max:100}},{kind:"sleep",context:"Quality",value:"7h 45m",label:"Deep Sleep",progress:{value:90,max:100}}],meals:[{id:"breakfast",state:"logged",occasion:"Breakfast",name:"Avocado & Poached Egg",time:"08:30",calories:420,protein:18,carbs:32,fat:24,imageSrc:"/dashboard/avocado-poached-egg.webp",imageAlt:"Avocado and poached egg breakfast"},{id:"lunch",state:"logged",occasion:"Lunch",name:"Quinoa Chicken Bowl",time:"13:15",calories:580,protein:45,carbs:50,fat:15,imageSrc:"/dashboard/quinoa-chicken-bowl.webp",imageAlt:"Quinoa chicken bowl"},{id:"dinner",state:"scheduled",occasion:"Dinner",time:"19:30",suggestion:"Grilled Salmon & Asparagus"}],calendarRange:["2026-07-20","2026-07-26"],calendarDays:["2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26"].map(date=>({date,inCurrentMonth:true,hasEvent:date==="2026-07-20"||date==="2026-07-22"})),events:[{id:"training",date:"2026-07-20",label:"Upper Body Power (17:00)",tone:"primary"},{id:"meal-prep",date:"2026-07-22",label:"Meal Prep Sunday",tone:"neutral"}],workouts:[{id:"run",kind:"run",name:"Morning Run",durationMinutes:45,calories:420,averageHeartRate:158,progress:{value:100,max:100}},{id:"strength",kind:"strength",name:"Strength Training",durationMinutes:60,calories:310,averageHeartRate:135,progress:{value:80,max:100}}],insight:{recommendation:"Based on your activity, you need 25g more protein today. Try adding a Greek yogurt snack before 4 PM.",recoveryPercent:85,disclaimer:"Demo wellness guidance, not medical advice."}};
 export const fixtureReferenceDashboard:DashboardReferenceData={
   summary:{
     calorieIntake:"2,135,00",
@@ -69,15 +70,15 @@ export const fixtureReferenceDashboard:DashboardReferenceData={
     {label:"Fat Loss Progress",description:"Progress toward your body fat goal.",value:"4.2 kg",percent:"53%",trend:"down"},
     {label:"Protein Goal",description:"Daily protein intake progress.",value:"145 g/day",percent:"81%",trend:"up"}
   ],
-  history:{
-    selectedDate:"2026-07-13",
-    availableDateRange:["2026-06-28","2026-07-25"],
+    history:{
+    selectedDate:"2026-07-20",
+    availableDateRange:["2026-07-20","2026-07-26"],
     entries:[
-      {id:"history-2026-07-12-1",date:"2026-07-12",mealName:"Recovery breakfast",recipe:"Garden egg toast",workoutCalories:-320,recipeCalories:420,price:4.7},
-      {id:"history-2026-07-13-1",date:"2026-07-13",mealName:"Post-workout lunch",recipe:"Herby chickpea bowl",workoutCalories:-450,recipeCalories:420,price:6.8},
-      {id:"history-2026-07-13-2",date:"2026-07-13",mealName:"Afternoon recovery",recipe:"Cocoa banana bites",workoutCalories:-210,recipeCalories:420,price:2.6},
-      {id:"history-2026-07-14-1",date:"2026-07-14",mealName:"Morning meal",recipe:"Apple overnight oats",workoutCalories:-280,recipeCalories:420,price:3.9},
-      {id:"history-2026-07-15-1",date:"2026-07-15",mealName:"Midday refuel",recipe:"Roasted veggie wrap",workoutCalories:-390,recipeCalories:420,price:5.7}
+      {id:"history-2026-07-20-1",date:"2026-07-20",mealName:"Recovery breakfast",recipe:"Garden egg toast",workoutCalories:-320,recipeCalories:420,price:4.7},
+      {id:"history-2026-07-21-1",date:"2026-07-21",mealName:"Post-workout lunch",recipe:"Herby chickpea bowl",workoutCalories:-450,recipeCalories:420,price:6.8},
+      {id:"history-2026-07-22-1",date:"2026-07-22",mealName:"Afternoon recovery",recipe:"Cocoa banana bites",workoutCalories:-210,recipeCalories:420,price:2.6},
+      {id:"history-2026-07-23-1",date:"2026-07-23",mealName:"Morning meal",recipe:"Apple overnight oats",workoutCalories:-280,recipeCalories:420,price:3.9},
+      {id:"history-2026-07-24-1",date:"2026-07-24",mealName:"Midday refuel",recipe:"Roasted veggie wrap",workoutCalories:-390,recipeCalories:420,price:5.7}
     ]
   }
 };
@@ -108,15 +109,25 @@ export const fixtureNutritions:Nutrition[]=[{metrics:[
 ]}];
 
 const days=[
-  day("2026-07-10","recorded",[meal("m1","Citrus oats","Breakfast","07:30",3.4,"completed")],"6.2k steps"),
-  day("2026-07-11","empty",[]),
-  day("2026-07-12","recorded",[meal("m2","Garden egg toast","Breakfast","08:00",4.7,"completed")],"8.1k steps"),
-  {...day("2026-07-13","recorded",[meal("m3","Herby chickpea bowl","Lunch","12:30",6.8),meal("m4","Cocoa banana bites","Afternoon snack","16:00",2.6,"planned"),meal("m5","Lime chicken plate","Dinner","19:15",8.2,"planned")],"7.8k steps"),isToday:true},
-  day("2026-07-14","future",[meal("m6","Apple overnight oats","Breakfast","07:30",3.9,"planned")]),
-  day("2026-07-15","future",[meal("m7","Roasted veggie wrap","Lunch","12:30",5.7,"planned"),conflictMeal]),
-  day("2026-07-16","unavailable",[])
+  day("2026-07-20","recorded",[meal("m1","Citrus oats","Breakfast","07:30",3.4,"completed")],"6.2k steps"),
+  day("2026-07-21","empty",[]),
+  day("2026-07-22","recorded",[meal("m2","Garden egg toast","Breakfast","08:00",4.7,"completed")],"8.1k steps"),
+  {...day("2026-07-23","recorded",[meal("m3","Herby chickpea bowl","Lunch","12:30",6.8),meal("m4","Cocoa banana bites","Afternoon snack","16:00",2.6,"planned"),meal("m5","Lime chicken plate","Dinner","19:15",8.2,"planned")],"7.8k steps"),isToday:true},
+  day("2026-07-24","future",[meal("m6","Apple overnight oats","Breakfast","07:30",3.9,"planned")]),
+  day("2026-07-25","future",[meal("m7","Roasted veggie wrap","Lunch","12:30",5.7,"planned"),conflictMeal]),
+  day("2026-07-26","unavailable",[])
 ];
-const model:DashboardViewModel={locale:"en-US",currency:"USD",timeZone:"America/Costa_Rica",selectedDate:"2026-07-13",availableDateRange:["2026-07-10","2026-07-16"],budget:{amount:18,cadence:"day"},days,contextsByDate:Object.fromEntries(days.map(d=>[d.date,contexts.map(c=>({...c,label:c.kind==="activity"&&d.kind==="future"?"Activity unavailable":c.label,available:c.kind==="activity"&&d.kind==="future"?false:c.available}))])),sectionStates,reference:fixtureReferenceDashboard};
+const snapshotFor=(index:number):DailyDashboardSnapshot=>{
+  const base=structuredClone(fixtureReferenceDashboard);
+  const factor=1+index*.04;
+  base.summary.calorieIntake=`${(2135+index*85).toLocaleString("en-US")},00`;
+  base.summary.activeBurn=`${(873+index*31).toLocaleString("en-US")},00`;
+  base.activityCards=base.activityCards.map((card,cardIndex)=>({...card,value:cardIndex===0?`${(3.2+index*.2).toFixed(1)} L`:cardIndex===1?`${(12560+index*380).toLocaleString("en-US")}`:cardIndex===2?`${7+index%3}h ${20+index*4}m`:cardIndex===3?`${Math.round(450*factor)} kcal`:cardIndex===4?`${(8.4+index*.5).toFixed(1)} km`:`${72+index} bpm`,trend:index%2?"+6.1%":card.trend}));
+  base.progressCards=base.progressCards.map((card,index2)=>({...card,value:index===0?card.value:index2===0?`${(4.2+index*.3).toFixed(1)} kg`:`${145+index*5} g/day`,percent:index===0?card.percent:`${53+index*4+index2*12}%`}));
+  return {preview:{nutrition:`${Math.round(2135+index*85).toLocaleString("en-US")} kcal eaten`,activity:`${45+index*5} min active`},summary:base.summary,activityCards:base.activityCards,progressCards:base.progressCards};
+};
+const referenceByDate=Object.fromEntries(days.map((item,index)=>[item.date,snapshotFor(index)]));
+const model:DashboardViewModel={locale:"en-US",currency:"USD",timeZone:"America/Costa_Rica",selectedDate:"2026-07-20",availableDateRange:["2026-07-20","2026-07-26"],budget:{amount:18,cadence:"day"},days,contextsByDate:Object.fromEntries(days.map(d=>[d.date,contexts.map(c=>({...c,label:c.kind==="activity"&&d.kind==="future"?"Activity unavailable":c.label,available:c.kind==="activity"&&d.kind==="future"?false:c.available}))])),sectionStates,reference:fixtureReferenceDashboard,referenceByDate,fitCore};
 
 export const fixtureDashboardProvider:DashboardProvider={async getDashboard(){return structuredClone(model)}};
 export const fixtureWithSectionState=(name:DashboardSectionName,status:DashboardSectionStatus):DashboardViewModel=>({...structuredClone(model),sectionStates:{...sectionStates,[name]:status}});

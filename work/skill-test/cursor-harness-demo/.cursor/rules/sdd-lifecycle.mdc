@@ -1,0 +1,24 @@
+---
+description: Spec-driven development lifecycle for Cursor Harness Demo
+globs:
+  - "specs/**/*.md"
+  - "progress/**/*.md"
+  - "reviews/**/*.md"
+  - ".agents/**/*.md"
+  - "AGENTS.md"
+alwaysApply: false
+---
+
+# SDD lifecycle
+
+Use this sequence:
+
+`Backlog / Not Started -> Specification -> Human Approval -> Implementation -> Review -> Human Completion`
+
+Required durable artifacts:
+
+- Spec Author creates `specs/<work-slug>/requirements.md`, `specs/<work-slug>/design.md`, and `specs/<work-slug>/tasks.md`.
+- Implementer records progress in `progress/current.md`.
+- Reviewer records verdict in `reviews/<work-slug>/review.md`.
+
+Human approval is required before implementation begins. Human completion is required after independent review. A closed issue or merged PR is not enough to mark work complete; verify the success measure.

@@ -1,0 +1,10 @@
+export type ActivityPeriod = "Week" | "Month" | "Year";
+export type ActivitySectionName = "summary" | "analysis" | "records" | "recent" | "trend" | "coach";
+export type ActivitySectionStatus = "ready" | "loading" | "empty" | "error";
+export type ActivityIconKind = "run" | "walk" | "cycle" | "strength";
+export type ActivitySummaryMetric = {label:string; value:string; unit:string; trend:string; kind:ActivityIconKind};
+export type ActivityPoint = {label:string; heartRate:number; pace:string; x:number; y:number};
+export type ActivityRecord = {label:string; value:string; date:string; kind:"trophy"|"timer"|"strength"};
+export type RecentActivity = {label:string; date:string; duration:string; calories:string; kind:ActivityIconKind; status:string};
+export type TrendItem = {day:string; value:number; current?:boolean};
+export type ActivityViewModel = {locale:string; timeZone:string; referenceDate:string; summaries:ActivitySummaryMetric[]; analysis:Record<ActivityPeriod,ActivityPoint[]>; records:ActivityRecord[]; recent:RecentActivity[]; trend:TrendItem[]; coach:{title:string; recommendation:string; disclosure:string}; sectionStates:Record<ActivitySectionName,ActivitySectionStatus>};

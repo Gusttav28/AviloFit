@@ -1,0 +1,21 @@
+---
+description: Engineering harness entrypoint for Cursor Harness Demo
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Engineering harness
+
+Begin by reading `AGENTS.md`.
+
+Operate through the Leader role in `.agents/leader.md`. Do not implement, write specifications, or review work unless the Leader routes the session to the matching role contract.
+
+Respect these source-of-truth boundaries:
+
+- Work tracker owns goals, priority, assignment, dependencies, approval, and durable knowledge.
+- Git platform owns branches, commits, PRs, checks, reviews, and merge state.
+- Repository docs own architecture, conventions, security, privacy, testing, and executable controls.
+- Harness contracts own role authority and phase gates.
+
+Stop when the governed work item, branch, approval, dependency, role, or verification state is missing or ambiguous.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Harness SDD"
+  short_description: "Spec-driven agent engineering harness"
+  default_prompt: "Use $engineering-harness-sdd to set up a governed spec-driven engineering harness for this project."

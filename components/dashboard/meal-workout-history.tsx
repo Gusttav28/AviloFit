@@ -1,6 +1,5 @@
 "use client";
 
-import {useState} from "react";
 import {ChevronLeft,ChevronRight} from "lucide-react";
 import {Table} from "@/components/ui/table";
 import {formatCurrency,formatDate,formatNumericMonthYear,formatSignedCalories} from "@/features/dashboard/format";
@@ -29,15 +28,14 @@ function weekDates(selectedDate:string){
   return weekdayInitials.map((_,index)=>addDays(sunday,index));
 }
 
-export function MealWorkoutHistory({history,locale,currency,timeZone}:{history:ReferenceHistoryData;locale:string;currency:string;timeZone:string}){
-  const [selectedDate,setSelectedDate]=useState(history.selectedDate);
+export function MealWorkoutHistory({history,selectedDate,onSelectDate,availableDates,locale,currency,timeZone}:{history:ReferenceHistoryData;selectedDate:string;onSelectDate:(date:string)=>void;availableDates:Set<string>;locale:string;currency:string;timeZone:string}){
   const dates=weekDates(selectedDate);
   const entries=history.entries.filter(entry=>entry.date===selectedDate);
   const selectedLabel=formatDate(selectedDate,locale,{weekday:"long",month:"long",day:"numeric",year:"numeric"},timeZone);
-  const shift=(amount:number)=>setSelectedDate(current=>addDays(current,amount));
+  const shift=(amount:number)=>{const target=addDays(selectedDate,amount);if(inRange(target))onSelectDate(target)};
   const previousDate=addDays(selectedDate,-7);
   const nextDate=addDays(selectedDate,7);
-  const inRange=(date:string)=>date>=history.availableDateRange[0]&&date<=history.availableDateRange[1];
+  const inRange=(date:string)=>date>=history.availableDateRange[0]&&date<=history.availableDateRange[1]&&availableDates.has(date);
   const countLabel=`${entries.length} ${entries.length===1?"result":"results"}`;
 
   return <section className="history-panel" aria-labelledby="meal-workout-history-title">
@@ -71,7 +69,7 @@ export function MealWorkoutHistory({history,locale,currency,timeZone}:{history:R
           aria-pressed={selected}
           aria-current={selected?"date":undefined}
           disabled={!enabled}
-          onClick={()=>setSelectedDate(date)}
+          onClick={()=>onSelectDate(date)}
         >
           <span aria-hidden="true">{weekdayInitials[index]}</span>
           <strong aria-hidden="true">{new Intl.NumberFormat(locale).format(Number(date.slice(-2)))}</strong>

@@ -1,22 +1,60 @@
-import {CalendarDays,Heart,MapPin,Search,Share2} from "lucide-react";
-import {Tooltip} from "@/components/ui/tooltip";
+import {
+  Activity,
+  Apple,
+  BarChart3,
+  CalendarCheck,
+  GraduationCap,
+  LayoutDashboard,
+  Settings,
+  Target,
+  TrendingUp
+} from "lucide-react";
+import Link from "next/link";
 
-const utilities=[
-  {label:"Search",icon:Search,active:true},
-  {label:"Share",icon:Share2},
-  {label:"Calendar",icon:CalendarDays},
-  {label:"Favorites",icon:Heart},
-  {label:"Location",icon:MapPin}
+export type DashboardSection = "Dashboard" | "Activity" | "Nutrition";
+
+const primaryItems=[
+  {label:"Dashboard",icon:LayoutDashboard,href:"/dashboard"},
+  {label:"Activity",icon:Activity,href:"/activity"},
+  {label:"Nutrition",icon:Apple,href:"/nutrition"},
+  {label:"Meal Planner",icon:CalendarCheck},
+  {label:"Course Release",icon:GraduationCap},
+  {label:"Progress",icon:TrendingUp},
+  {label:"Statistics",icon:BarChart3},
+  {label:"Goals",icon:Target}
 ];
 
-export function ContextualUtilities(){
-  return <aside className="utility-rail" aria-label="Quick utilities">
-    {utilities.map(({label,icon:Icon,active})=>
-      <Tooltip key={label} label={label}>
-        <button className={active?"rail-button active":"rail-button"} type="button" aria-label={label}>
-          <Icon size={16} aria-hidden="true" />
-        </button>
-      </Tooltip>
-    )}
+const secondaryItems=[
+  {label:"Settings",icon:Settings}
+];
+
+export function ContextualUtilities({currentSection="Dashboard"}:{currentSection?:DashboardSection}){
+  return <aside className="avilo-sidebar" aria-label="Dashboard sidebar">
+    <div className="avilo-sidebar-brand" aria-label="AviloFit">
+      <span>Avilo</span><strong>Fit</strong>
+    </div>
+    <div className="avilo-sidebar-panel">
+      <nav className="avilo-sidebar-nav" aria-label="Dashboard sections">
+        {primaryItems.map(({label,icon:Icon,href})=>
+          (() => { const active = label === currentSection; const content = <><span className="avilo-sidebar-icon" aria-hidden="true"><Icon size={15} /></span><span className="avilo-sidebar-label">{label}</span></>; return href ? <Link key={label} className={active?"avilo-sidebar-item active":"avilo-sidebar-item"} href={href} aria-label={label} aria-current={active?"page":undefined}>{content}</Link> : <button key={label} className="avilo-sidebar-item" type="button" aria-label={label}>{content}</button>; })()
+        )}
+      </nav>
+    </div>
+    <footer className="avilo-sidebar-footer">
+      <div className="avilo-sidebar-settings" aria-label="Dashboard settings">
+        {secondaryItems.map(({label,icon:Icon})=>
+          <button key={label} className="avilo-sidebar-item" type="button" aria-label={label}>
+            <span className="avilo-sidebar-icon" aria-hidden="true"><Icon size={15} /></span>
+            <span className="avilo-sidebar-label">{label}</span>
+          </button>
+        )}
+      </div>
+      <div className="avilo-sidebar-profile" aria-label="Demo profile">
+        <span className="avilo-sidebar-avatar" aria-hidden="true">AC</span>
+        <span className="avilo-sidebar-status" aria-hidden="true" />
+        <strong>Alex Carter</strong>
+        <span>Pro Member</span>
+      </div>
+    </footer>
   </aside>;
 }

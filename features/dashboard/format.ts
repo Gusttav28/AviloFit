@@ -21,3 +21,5 @@ export const formatNumericMonthYear=(date:string,locale:string,timeZone:string)=
   return `${month} / ${year}`;
 };
 export const formatSignedCalories=(value:number,locale:string)=>`${new Intl.NumberFormat(locale,{signDisplay:"always",maximumFractionDigits:0}).format(value)} kcal`;
+export const clampProgress=(value:number,max=100)=>Math.min(max,Math.max(0,value));
+export const progressPercent=(progress:{value:number;max:number})=>progress.max>0?clampProgress(progress.value/progress.max*100):0;
