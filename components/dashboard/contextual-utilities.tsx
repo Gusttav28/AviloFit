@@ -11,14 +11,14 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export type DashboardSection = "Dashboard" | "Activity" | "Nutrition";
+export type DashboardSection = "Dashboard" | "Activity" | "Nutrition" | "Meal Planner" | "Recipes";
 
 const primaryItems=[
   {label:"Dashboard",icon:LayoutDashboard,href:"/dashboard"},
   {label:"Activity",icon:Activity,href:"/activity"},
   {label:"Nutrition",icon:Apple,href:"/nutrition"},
-  {label:"Meal Planner",icon:CalendarCheck},
-  {label:"Course Release",icon:GraduationCap},
+  {label:"Meal Planner",icon:CalendarCheck,href:"/meal-planner"},
+  {label:"Recipes",icon:GraduationCap,href:"/recipes"},
   {label:"Progress",icon:TrendingUp},
   {label:"Statistics",icon:BarChart3},
   {label:"Goals",icon:Target}

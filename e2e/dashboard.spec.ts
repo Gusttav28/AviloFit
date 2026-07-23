@@ -55,9 +55,9 @@ for (const width of widths) {
     await expect(sidebar.getByRole("link", {name: "Dashboard"})).toHaveAttribute("aria-current", "page");
     await expect(sidebar.getByRole("link", {name: "Activity"})).toHaveAttribute("href", "/activity");
     await expect(sidebar.getByRole("link", {name: "Nutrition"})).toHaveAttribute("href", "/nutrition");
-    for (const name of ["Meal Planner", "Course Release", "Progress", "Statistics", "Goals", "Settings"]) {
-      await expect(sidebar.getByRole("button", {name})).toBeVisible();
-    }
+    await expect(page.getByRole("link", {name: "Meal Planner"})).toHaveAttribute("href", "/meal-planner");
+    await expect(sidebar.getByRole("link", {name: "Recipes"})).toHaveAttribute("href", "/recipes");
+    for (const name of ["Progress", "Statistics", "Goals", "Settings"]) await expect(sidebar.getByRole("button", {name})).toBeVisible();
 
     await expect(page.getByText("Avilo Fit", {exact: true}).first()).toBeVisible();
     await expect(page.getByRole("searchbox", {name: "Search analytics"})).toBeVisible();
